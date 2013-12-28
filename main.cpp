@@ -1,16 +1,26 @@
 #include <cxxabi.h>
 #include <iostream>
+#include <memory>
 #include <vector>
 #include <typeindex>
 #include <typeinfo>
 
 class foo { };
 
+#ifdef __GNUG__
 std::string find_name(const char* str) {
 	int status;
 	std::unique_ptr<char[], void (*)(void*)> result(abi::__cxa_demangle(str, 0, 0, &status), std::free);
 	return result.get() ? std::string(result.get()) : "error";
 }
+
+#else
+
+std::string find_name(const char* str) {
+	return str;
+}
+
+#endif
 
 template<class T>
 std::string typeid_new(T t) { return find_name(typeid(t).name()); }
@@ -49,7 +59,8 @@ int main()
 	// std::vector
 	print(typeid(std::vector<int>()).name());	// FNSt3__16vectorIiNS_9allocatorIiEEEEvE
 	print(typeid_new(std::vector<int>()));		// std::__1::vector<int, std::__1::allocator<int> >
-	
+
+
 	// std::string
 	print(typeid(std::string()).name());		// FNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEvE
 	print(typeid_new(std::string()));			// std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >
