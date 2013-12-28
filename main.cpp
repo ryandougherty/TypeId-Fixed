@@ -4,8 +4,7 @@
 #include <typeindex>
 #include <typeinfo>
 
-class foo { 
-};
+class foo { };
 
 std::string find_name(const char* str) {
 	int status;
