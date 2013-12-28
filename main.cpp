@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <cxxabi.h>
 #include <iostream>
 #include <memory>
@@ -10,7 +11,7 @@ class foo { };
 #ifdef __GNUG__
 std::string find_name(const char* str) {
 	int status;
-	std::unique_ptr<char[], void (*)(void*)> result(abi::__cxa_demangle(str, 0, 0, &status), std::free);
+	std::unique_ptr<char[], decltype(&std::free)> result(abi::__cxa_demangle(str, 0, 0, &status), std::free);
 	return result.get() ? std::string(result.get()) : "error";
 }
 
