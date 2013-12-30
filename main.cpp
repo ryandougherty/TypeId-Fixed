@@ -11,8 +11,9 @@ class foo { };
 #ifdef __GNUG__
 std::string find_name(const char* str) {
 	int status;
-	std::unique_ptr<char[], decltype(&std::free)> result(abi::__cxa_demangle(str, 0, 0, &status), std::free);
-	return result.get() ? std::string(result.get()) : "error";
+	std::unique_ptr<char[], decltype(&std::free)> result(abi::__cxa_demangle(str, NULL, NULL, &status), std::free);
+	auto r = result.get();
+	return r ? std::string(r) : "error";
 }
 
 #else
@@ -60,7 +61,6 @@ int main()
 	// std::vector
 	print(typeid(std::vector<int>()).name());	// FNSt3__16vectorIiNS_9allocatorIiEEEEvE
 	print(typeid_new(std::vector<int>()));		// std::__1::vector<int, std::__1::allocator<int> >
-
 
 	// std::string
 	print(typeid(std::string()).name());		// FNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEvE
