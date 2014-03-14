@@ -11,6 +11,7 @@ class foo { };
 #ifdef __GNUG__
 std::string find_name(const char* str) {
 	int status;
+	// aka magic!
 	std::unique_ptr<char[], decltype(&std::free)> result(abi::__cxa_demangle(str, NULL, NULL, &status), std::free);
 	auto r = result.get();
 	return r ? std::string(r) : "error";
